@@ -1,1 +1,2 @@
 # AppleNote
+记录macOS和iPhone的各种应用设置安装等笔记
