@@ -1,2 +1,23 @@
 # AppleNote
 记录macOS和iPhone的各种应用设置安装等笔记
+
+### macOS 初始设置和应用安装推荐
+
+### 一、系统设置 
+#### 1、调整每一列显示图标数量(*代表你要显示的列数) 
+defaults write com.apple.dock springboard-rows -int 6
+#### 2、调整每一行显示图标数量（*代表你要显示的行数） 
+defaults write com.apple.dock springboard-columns -int 9 
+#### 3、设置生效 
+killall Dock
+
+
+###一键安装（国内加速版）  
+/bin/bash -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"  
+
+###每次升级后自动清理  
+echo 'export HOMEBREW_NO_INSTALL_CLEANUP=0' >> ~/.zshrc  
+
+###每周自动更新  
+crontab -e  
+0 3 * * 0 brew cleanup -s  
