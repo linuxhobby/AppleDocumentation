@@ -24,7 +24,6 @@ crontab -e
 # My macOS Applications
 
 ## 🚀 Efficiency Tools
-
 # 🍎 My macOS Applications
 
 <div align="center">
@@ -36,26 +35,7 @@ crontab -e
 </div>
 
 > 我的 macOS 常用软件清单。  
-> 主要围绕效率、开发、AI、NAS 与日常娱乐打造。  
-> 平台基于 Apple Silicon（M 系列）环境。  
-> 持续更新中 🚀
-
----
-
-# 🚀 Efficiency & Productivity
-
-# 🍎 My macOS Applications
-
-<div align="center">
-
-![macOS](https://img.shields.io/badge/macOS-Apple-black?style=for-the-badge&logo=apple)
-![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-M%20Series-blue?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Updating-success?style=for-the-badge)
-
-</div>
-
-> 我的 macOS 常用软件清单。  
-> 主要围绕效率、开发、AI、NAS、办公与影音娱乐打造。  
+> 主要围绕效率、开发、AI、NAS、影音娱乐与日常办公打造。  
 > 持续更新中 🚀
 
 ---
@@ -83,176 +63,27 @@ crontab -e
 
 # 🚀 Efficiency & Productivity
 
-| APP | 功能简介 |
-|---|---|
-| Alfred 5 | macOS 顶级效率工具，支持 Workflow 自动化 |
-| CheatSheet | 长按 Command 查看当前软件快捷键 |
-| Rectangle | macOS 窗口分屏与快捷布局工具 |
-| FlowVision | AI 工作流工具 |
-| Easydict | OCR + 划词翻译工具 |
-| TablePlus | 现代化数据库管理工具 |
+# Alfred 5
 
----
-
-# 💻 Development & Terminal
-
-| APP | 功能简介 |
-|---|---|
-| iTerm2 | macOS 高级终端 |
-| GitHub Desktop | GitHub 官方 Git 管理工具 |
-| FileZilla | FTP / SFTP 文件传输 |
-| CotEditor | 轻量代码与文本编辑器 |
-
----
-
-# 🤖 AI Tools
-
-| APP | 功能简介 |
-|---|---|
-| ChatGPT | OpenAI 官方 AI 客户端 |
-| Claude | Anthropic AI 工具 |
-| Gemini | Google AI 工具 |
-| ChatGPT Atlas | 第三方 AI 客户端 |
-
----
-
-# 🧹 System Tools
-
-| APP | 功能简介 |
-|---|---|
-| AppCleaner | 卸载 APP 并清理残留 |
-| DaisyDisk | 磁盘空间可视化工具 |
-| AdGuard | 广告与 Tracker 拦截 |
-| Tailscale | 零配置异地组网 |
-| macshot | 截图工具 |
-
----
-
-# 📦 Compression Tools
-
-| APP | 功能简介 |
-|---|---|
-| Keka | macOS 解压缩神器 |
-| The Unarchiver | 冷门格式兼容优秀 |
-
----
-
-# 🎬 Media & Content
-
-| APP | 功能简介 |
-|---|---|
-| IINA | macOS 本地播放器 |
-| OBS | 录屏与直播工具 |
-| 剪映专业版 | 视频剪辑工具 |
-| Aegisub | 字幕编辑工具 |
-| NetNewsWire | RSS 阅读器 |
-
----
-
-# 🌐 Network & Proxy
-
-| APP | 功能简介 |
-|---|---|
-| Shadowrocket | Apple 平台代理工具 |
-| v2rayN | 网络代理与分流工具 |
-
----
-
-# ☁️ Cloud & NAS
-
-| APP | 功能简介 |
-|---|---|
-| MEGAsync | MEGA 云盘客户端 |
-| UGREEN NAS | 绿联 NAS 官方客户端 |
-| Synology Drive Client | 群晖同步工具 |
-| 夸克网盘 | 国内云盘工具 |
-
----
-
-# 💬 Communication
-
-| APP | 功能简介 |
-|---|---|
-| Telegram | 国际化即时通讯工具 |
-| WhatsApp | 海外主流通讯工具 |
-| 微信 | 国内主力即时通讯工具 |
-| 企业微信 | 企业办公通讯工具 |
-| TIM | 腾讯轻量办公版 QQ |
-| Tuta Mail | 加密邮件客户端 |
-| mail.com | 邮件客户端 |
-
----
-
-# 📄 Office
-
-| APP | 功能简介 |
-|---|---|
-| Microsoft Word | 文档编辑工具 |
-| Microsoft Excel | 数据分析工具 |
-| Microsoft PowerPoint | 演示文稿工具 |
-
----
-
-# 🎵 Entertainment
-
-| APP | 功能简介 |
-|---|---|
-| 迅雷 | 下载工具 |
-| 爱奇艺 | 视频平台 |
-| 优酷 | 视频平台 |
-
----
-
-# 💰 Finance
-
-| APP | 功能简介 |
-|---|---|
-| 同花顺 | 股票行情与交易工具 |
-
----
-
-# 🖥️ Remote & Virtualization
-
-| APP | 功能简介 |
-|---|---|
-| Windows App | 微软远程桌面工具 |
-
----
-
-# 📑 PDF Tools
-
-| APP | 功能简介 |
-|---|---|
-| Adobe Acrobat | PDF 编辑工具 |
-| Acrobat Distiller | PDF 转换工具 |
-
----
-
----
-
-# 📖 Detailed Introduction
-
-# 🚀 Alfred 5
-
-> macOS 效率神器，也是我日常使用频率最高的软件之一。
+> macOS 顶级效率工具，也是我日常使用频率最高的软件之一。
 
 ### 功能特点
 
 - 全局搜索
 - Workflow 自动化
 - 剪贴板历史
+- 文件搜索
 - Shell Script 执行
-- 文件快速定位
 - 浏览器书签搜索
 - Snippets 文本扩展
 
 ### 我的使用场景
 
-- 快速启动 APP
+- 启动 APP
+- 搜索 NAS 文件
 - SSH 服务器
-- 搜索 Obsidian 笔记
 - AI 工作流联动
-- 一键打开常用项目
+- 快速打开项目目录
 
 ### 官网
 
@@ -260,9 +91,31 @@ https://www.alfredapp.com/
 
 ---
 
-# 🚀 Rectangle
+# CheatSheet
 
-> macOS 最实用的窗口管理工具之一。
+> 长按 `⌘ Command` 即可查看当前软件全部快捷键。
+
+### 功能特点
+
+- 自动识别快捷键
+- 无需额外配置
+- 支持绝大多数 macOS 软件
+
+### 我的使用场景
+
+- 学习 Premiere 快捷键
+- 学习 Photoshop
+- IDE 快捷键查询
+
+### 官网
+
+https://www.mediaatelier.com/CheatSheet/
+
+---
+
+# Rectangle
+
+> macOS 窗口管理神器。
 
 ### 功能特点
 
@@ -270,14 +123,12 @@ https://www.alfredapp.com/
 - 四角布局
 - 多显示器支持
 - 快捷键窗口移动
-- 类 Windows 分屏体验
 
 ### 我的使用场景
 
+- Terminal + 浏览器分屏
 - 双屏办公
-- 浏览器 + Terminal 分屏
 - 视频剪辑布局
-- 开发环境窗口整理
 
 ### 官网
 
@@ -285,7 +136,32 @@ https://rectangleapp.com/
 
 ---
 
-# 💻 iTerm2
+# Easydict
+
+> 非常优秀的 macOS 翻译工具。
+
+### 功能特点
+
+- OCR 识别
+- 划词翻译
+- 多翻译源
+- 快捷键呼出
+
+### 我的使用场景
+
+- 阅读英文文档
+- 阅读 GitHub
+- 翻译技术文章
+
+### GitHub
+
+https://github.com/tisfeng/Easydict
+
+---
+
+# 💻 Development & Terminal
+
+# iTerm2
 
 > macOS 开发者必装终端。
 
@@ -295,15 +171,14 @@ https://rectangleapp.com/
 - SSH Profile
 - 自动补全
 - Shell Integration
-- 自定义主题
 - 快捷键增强
 
 ### 我的使用场景
 
-- SSH 远程服务器
+- Linux 运维
 - Docker 管理
-- NAS 运维
-- Proxmox / Linux 管理
+- NAS 管理
+- SSH 远程
 
 ### 官网
 
@@ -311,26 +186,94 @@ https://iterm2.com/
 
 ---
 
-# 🤖 ChatGPT
+# GitHub Desktop
 
-> OpenAI 官方 AI 客户端。
+> GitHub 官方桌面客户端。
+
+### 功能特点
+
+- Git 仓库管理
+- Branch 管理
+- Pull Request
+- 图形化 Git
+
+### 我的使用场景
+
+- Markdown 仓库维护
+- 配置文件同步
+- GitHub 项目管理
+
+### 官网
+
+https://desktop.github.com/
+
+---
+
+# FileZilla
+
+> 老牌 FTP / SFTP 工具。
+
+### 功能特点
+
+- FTP
+- SFTP
+- 断点续传
+- 多站点管理
+
+### 我的使用场景
+
+- Linux 文件上传
+- NAS 文件管理
+- 网站部署
+
+### 官网
+
+https://filezilla-project.org/
+
+---
+
+# CotEditor
+
+> 轻量级文本编辑器。
+
+### 功能特点
+
+- 打开速度快
+- UTF-8 支持优秀
+- 代码高亮
+
+### 我的使用场景
+
+- 编辑配置文件
+- Markdown 编辑
+- Shell Script 编辑
+
+### 官网
+
+https://coteditor.com/
+
+---
+
+# 🤖 AI Tools
+
+# ChatGPT
+
+> OpenAI 官方客户端。
 
 ### 功能特点
 
 - AI 对话
-- 代码辅助
+- 编程辅助
 - 文档总结
-- 翻译
-- 学习辅助
 - 图像识别
+- AI 翻译
 
 ### 我的使用场景
 
-- 编程辅助
 - Linux 运维
+- 编程辅助
 - 文档整理
-- Markdown 编写
-- AI 自动化
+- README 编写
 
 ### 官网
 
@@ -342,23 +285,88 @@ https://apps.apple.com/app/chatgpt/id6448311069
 
 ---
 
-# 🧹 DaisyDisk
+# Claude
 
-> macOS 最直观的磁盘清理工具之一。
+> Anthropic AI 工具。
+
+### 功能特点
+
+- 超长上下文
+- 代码阅读
+- 文档理解
+- AI 总结
+
+### 我的使用场景
+
+- 阅读大型代码库
+- 长文档分析
+- 技术文档整理
+
+### 官网
+
+https://claude.ai/
+
+---
+
+# Gemini
+
+> Google AI 工具。
+
+### 功能特点
+
+- Google 生态整合
+- AI 搜索
+- Workspace 联动
+
+### 我的使用场景
+
+- Google 搜索增强
+- AI 辅助办公
+
+### 官网
+
+https://gemini.google.com/
+
+---
+
+# 🧹 System Tools
+
+# AppCleaner
+
+> macOS 卸载神器。
+
+### 功能特点
+
+- 删除残留
+- 清理缓存
+- 清理偏好设置
+
+### 我的使用场景
+
+- 删除测试软件
+- 清理无用 APP
+
+### 官网
+
+https://freemacsoft.net/appcleaner/
+
+---
+
+# DaisyDisk
+
+> macOS 最直观的磁盘清理工具。
 
 ### 功能特点
 
 - 磁盘可视化
 - 大文件扫描
-- 拖拽删除
-- SSD 空间分析
+- 快速删除
 
 ### 我的使用场景
 
-- 清理缓存
 - 清理 Docker 数据
-- NAS 下载目录整理
-- 视频素材管理
+- 清理视频缓存
+- SSD 空间管理
 
 ### 官网
 
@@ -366,23 +374,42 @@ https://daisydiskapp.com/
 
 ---
 
-# 🌐 Tailscale
+# AdGuard
 
-> NAS 用户几乎绕不开的远程组网神器。
+> 广告过滤工具。
 
 ### 功能特点
 
-- 基于 WireGuard
-- 零配置组网
-- 异地访问
+- 网页广告过滤
+- DNS 过滤
+- Tracker 拦截
+
+### 我的使用场景
+
+- Safari 广告过滤
+- YouTube 广告优化
+
+### 官网
+
+https://adguard.com/
+
+---
+
+# Tailscale
+
+> 基于 WireGuard 的零配置组网工具。
+
+### 功能特点
+
 - 内网穿透
+- 异地访问
 - 远程 SSH
 
 ### 我的使用场景
 
-- 异地访问 NAS
-- 远程管理 Linux
-- 家庭服务器互联
+- 远程 NAS
+- 远程 Linux
+- 家庭组网
 
 ### 官网
 
@@ -390,24 +417,68 @@ https://tailscale.com/
 
 ---
 
-# 🎬 IINA
+# 📦 Compression Tools
 
-> macOS 最优秀本地播放器之一。
+# Keka
+
+> macOS 解压缩神器。
 
 ### 功能特点
 
-- 基于 mpv
-- HDR 支持
-- 在线视频
-- 字幕增强
-- 手势控制
+- 支持 7z
+- 支持 rar
+- 支持 zip
+- 压缩率高
 
 ### 我的使用场景
 
-- 本地视频播放
+- 压缩备份
+- NAS 文件整理
+
+### 官网
+
+https://www.keka.io/
+
+---
+
+# The Unarchiver
+
+> 老牌解压缩工具。
+
+### 功能特点
+
+- 冷门格式支持优秀
+- 操作简单
+
+### 我的使用场景
+
+- 解压旧压缩包
+- 解压冷门格式
+
+### 官网
+
+https://theunarchiver.com/
+
+---
+
+# 🎬 Media & Content
+
+# IINA
+
+> macOS 最优秀播放器之一。
+
+### 功能特点
+
+- HDR 支持
+- 字幕增强
+- 在线视频
+- 倍速播放
+
+### 我的使用场景
+
 - NAS 视频播放
+- HDR 视频
 - 字幕调试
-- HDR 视频观看
 
 ### 官网
 
@@ -415,7 +486,121 @@ https://iina.io/
 
 ---
 
-# ☁️ UGREEN NAS
+# OBS
+
+> 开源录屏与直播工具。
+
+### 功能特点
+
+- 推流
+- 录屏
+- 多场景
+- 插件生态
+
+### 我的使用场景
+
+- 教学录课
+- YouTube 视频
+- 屏幕录制
+
+### 官网
+
+https://obsproject.com/
+
+---
+
+# 剪映专业版
+
+> 中文用户最好上手的视频工具之一。
+
+### 功能特点
+
+- AI 字幕
+- 多轨编辑
+- 特效
+- 模板
+
+### 我的使用场景
+
+- 短视频
+- 教学视频
+- 字幕制作
+
+### 官网
+
+https://www.capcut.cn/
+
+---
+
+# Aegisub
+
+> 专业字幕工具。
+
+### 功能特点
+
+- ASS 字幕
+- 时间轴
+- 字幕特效
+
+### 我的使用场景
+
+- 字幕校对
+- 字幕压制
+
+### 官网
+
+http://www.aegisub.org/
+
+---
+
+# 🌐 Network & Proxy
+
+# Shadowrocket
+
+> Apple 平台代理工具。
+
+### 功能特点
+
+- Clash
+- V2Ray
+- Trojan
+- 分流规则
+
+### 我的使用场景
+
+- 科学上网
+- 网络分流
+
+### App Store
+
+https://apps.apple.com/app/shadowrocket/id932747118
+
+---
+
+# v2rayN
+
+> 网络代理工具。
+
+### 功能特点
+
+- 节点管理
+- 分流
+- 网络调试
+
+### 我的使用场景
+
+- 网络测试
+- 科学上网
+
+### GitHub
+
+https://github.com/2dust/v2rayN
+
+---
+
+# ☁️ Cloud & NAS
+
+# UGREEN NAS
 
 > 绿联 NAS 官方客户端。
 
@@ -424,14 +609,13 @@ https://iina.io/
 - 文件同步
 - 相册备份
 - 远程访问
-- NAS 管理
 - 文件分享
 
 ### 我的使用场景
 
-- 家庭文件中心
 - iPhone 自动备份
-- 异地文件同步
+- 家庭媒体中心
+- NAS 文件同步
 
 ### 官网
 
@@ -439,7 +623,30 @@ https://www.ugnas.com/
 
 ---
 
-# 💬 Telegram
+# Synology Drive Client
+
+> 群晖同步工具。
+
+### 功能特点
+
+- 文件同步
+- 自动备份
+- 多设备协同
+
+### 我的使用场景
+
+- 文档同步
+- NAS 自动备份
+
+### 官网
+
+https://www.synology.com/
+
+---
+
+# 💬 Communication
+
+# Telegram
 
 > 国际化即时通讯工具。
 
@@ -449,14 +656,12 @@ https://www.ugnas.com/
 - 超大群组
 - 文件传输
 - 多平台同步
-- 频道订阅
 
 ### 我的使用场景
 
 - 技术社区
-- AI 资讯
-- 自动化通知
-- NAS 消息推送
+- AI 社区
+- NAS 通知
 
 ### 官网
 
@@ -464,16 +669,197 @@ https://telegram.org/
 
 ---
 
+# 微信
+
+> 国内主力通讯工具。
+
+### 功能特点
+
+- 即时通讯
+- 文件传输
+- 视频会议
+- 微信支付
+
+### 我的使用场景
+
+- 工作沟通
+- 文件传输
+- NAS 文件发送
+
+### 官网
+
+https://weixin.qq.com/
+
+---
+
+# TIM
+
+> 腾讯轻量办公版 QQ。
+
+### 功能特点
+
+- 更简洁
+- 无复杂娱乐功能
+- 办公导向
+
+### 我的使用场景
+
+- 办公消息
+- 文件中转
+
+### 官网
+
+https://tim.qq.com/
+
+---
+
+# 📄 Office
+
+# Microsoft Word
+
+> 文档编辑工具。
+
+### 功能特点
+
+- DOCX 编辑
+- 模板
+- 协作
+
+### 我的使用场景
+
+- 文档编写
+- 简历制作
+
+### 官网
+
+https://www.microsoft.com/microsoft-365/word
+
+---
+
+# Microsoft Excel
+
+> 数据处理核心工具。
+
+### 功能特点
+
+- 数据分析
+- 数据透视表
+- 函数
+
+### 我的使用场景
+
+- 财务统计
+- NAS 数据整理
+
+### 官网
+
+https://www.microsoft.com/microsoft-365/excel
+
+---
+
+# 🎵 Entertainment
+
+# 迅雷
+
+> 老牌下载工具。
+
+### 功能特点
+
+- PT 下载
+- 磁力下载
+- 大文件加速
+
+### 我的使用场景
+
+- NAS 下载
+- 影视资源管理
+
+### 官网
+
+https://www.xunlei.com/
+
+---
+
+# 💰 Finance
+
+# 同花顺
+
+> 国内主流股票软件。
+
+### 功能特点
+
+- A 股
+- 港股
+- 基金
+- Level2
+
+### 我的使用场景
+
+- 股票行情
+- 财务观察
+
+### 官网
+
+https://www.10jqka.com.cn/
+
+---
+
+# 🖥️ Remote & Virtualization
+
+# Windows App
+
+> 微软远程桌面工具。
+
+### 功能特点
+
+- RDP
+- 多设备同步
+- Windows 远程控制
+
+### 我的使用场景
+
+- 远程 Windows
+- 远程服务器
+
+### 官网
+
+https://apps.microsoft.com/
+
+---
+
+# 📑 PDF Tools
+
+# Adobe Acrobat
+
+> PDF 编辑神器。
+
+### 功能特点
+
+- PDF 编辑
+- PDF 转换
+- 签名
+- OCR
+
+### 我的使用场景
+
+- PDF 修改
+- 扫描件处理
+
+### 官网
+
+https://www.adobe.com/acrobat/
+
+---
+
 # 📌 Keep Updating
 
-后续还会继续增加：
+后续继续增加：
 
-- Homebrew 工具
+- Homebrew 工具链
 - Docker 工具链
-- NAS 工具
 - AI 工具链
-- 开发环境
-- 浏览器插件
 - Menu Bar 工具
+- NAS 工具
+- 浏览器插件
 
 持续更新中 🚀
