@@ -175,9 +175,8 @@ setup_optimizations() {
   run_cmd "Finder 显示隐藏文件" defaults write com.apple.finder AppleShowAllFiles -bool true
   run_cmd "Finder 路径栏" defaults write com.apple.finder ShowPathbar -bool true
   run_cmd "禁用 DS_Store 网络" defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-  # Dock
-  run_cmd "Dock 自动隐藏加速" defaults write com.apple.dock autohide -bool true
-  run_cmd "Dock 动画加速" defaults write com.apple.dock autohide-time-modifier -float 0.15
+  # Dock - 不自动隐藏（用户要求）
+  run_cmd "Dock 不自动隐藏" defaults write com.apple.dock autohide -bool false
   # 截图
   mkdir -p "$HOME/Pictures/Screenshots"
   run_cmd "截图位置" defaults write com.apple.screencapture location "$HOME/Pictures/Screenshots"
@@ -249,8 +248,9 @@ if command -v zoxide &>/dev/null; then
 fi
 
 # 基础
-alias ll='eza -l --icons --git'
 alias ls='eza'
+alias ll='eza -l --icons --git --all'   # 显示隐藏文件
+alias la='eza -a --icons --git'
 alias cat='bat --style=plain'
 alias ..='cd ..'
 
