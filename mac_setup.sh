@@ -1,193 +1,435 @@
 #!/bin/bash
 # ==============================================
-#  macOS 简单一键设置脚本 (Setup Script)
-#  功能：
-#    - 安装 Xcode Command Line Tools
-#    - 安装 Homebrew（如果没有）
-#    - 安装常用 CLI 工具（包含 iperf3 等网络测试工具）
-#    - 安装常用 GUI App（通过 Homebrew Cask）
-#    - 应用基础系统优化（键盘速度、Finder、Dock 等）
-#  使用方法：
-#    1. 保存为 mac_setup.sh
-#    2. chmod +x mac_setup.sh
-#    3. ./mac_setup.sh
-#  注意：
-#    - 运行前建议备份（Time Machine）
-#    - 部分优化需要重启或重新登录生效
-#    - App Store App 需要先登录 App Store
-#  作者：基于用户需求定制（参考 mathiasbynens 等经典优化）
+#  macOS 高级一键设置脚本 (Advanced Setup Script)
+#  完整功能：
+#    - 交互菜单 或 --dry-run 支持 (类似 linux_tools.sh)
+#    - 更多工具: AI (ollama), 网络/VPS (tailscale, nmap, terraform, ansible, kubectl, helm 等)
+#    - 集成 chezmoi (现代 dotfiles 管理)
+#    - Oh My Zsh + 流行插件 (autosuggestions, syntax-highlighting 等)
+#    - Grok CLI (官方 + 开源)
+#    - 自动 git init ~/.dotfiles + 提示 push
+#    - 丰富网络测试别名 + 函数
+#    - 系统优化
+#    - Brewfile 生成
+#  用法:
+#    ./mac_setup.sh                  # 交互菜单
+#    ./mac_setup.sh --dry-run        # 预览模式，不执行
+#    ./mac_setup.sh --all            # 直接全执行
+#  自定义: 编辑脚本中的数组和变量
 # ==============================================
 
-set -e  # 出错立即退出
+set -e
 
-# 颜色输出
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+CYAN='\033[0;36m'
+NC='\033[0m'
 
 info()    { echo -e "${BLUE}[INFO]${NC}  $1"; }
 success() { echo -e "${GREEN}[OK]${NC}    $1"; }
 warn()    { echo -e "${YELLOW}[WARN]${NC}  $1"; }
 error()   { echo -e "${RED}[ERROR]${NC} $1"; exit 1; }
 
-# 检查是否为 macOS
+DRY_RUN=false
+RUN_ALL=false
+
+# Parse args
+for arg in "$@"; do
+  case $arg in
+    --dry-run) DRY_RUN=true ;;
+    --all) RUN_ALL=true ;;
+  esac
+done
+
 if [[ "$(uname)" != "Darwin" ]]; then
     error "此脚本仅适用于 macOS！"
 fi
 
 echo ""
-echo "======================================"
-echo "   macOS 简单设置脚本开始执行"
-echo "======================================"
+echo -e "${CYAN}======================================"
+echo "   macOS 高级设置脚本"
+if $DRY_RUN; then echo "   [DRY-RUN 模式 - 仅预览]"; fi
+echo -e "======================================${NC}"
 echo ""
 
-# 1. 安装 Xcode Command Line Tools（Homebrew 依赖）
-info "检查并安装 Xcode Command Line Tools..."
-if ! xcode-select -p &>/dev/null; then
-    xcode-select --install
-    warn "请在弹出的窗口中完成 Xcode Command Line Tools 安装，然后重新运行此脚本。"
-    exit 0
-else
-    success "Xcode Command Line Tools 已安装"
-fi
+# Helper for dry-run
+run_cmd() {
+  local desc="$1"
+  shift
+  if $DRY_RUN; then
+    echo -e "${YELLOW}[DRY]${NC}  $desc"
+    echo "      Would run: $@"
+  else
+    info "$desc"
+    "$@"
+  fi
+}
 
-# 2. 安装 Homebrew
-info "检查并安装 Homebrew..."
-if ! command -v brew &>/dev/null; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    # 添加到 PATH（Apple Silicon 和 Intel 都兼容）
-    if [[ -f /opt/homebrew/bin/brew ]]; then
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [[ -f /usr/local/bin/brew ]]; then
-        eval "$(/usr/local/bin/brew shellenv)"
+# ==============================================
+# 定义各步骤函数 (支持 dry-run)
+# ==============================================
+
+setup_base() {
+  info "=== 1. 基础环境 (Xcode + Homebrew) ==="
+  run_cmd "检查 Xcode Command Line Tools" xcode-select -p &>/dev/null || {
+    if ! $DRY_RUN; then
+      xcode-select --install
+      warn "请完成安装后重新运行"
+      exit 0
     fi
-    success "Homebrew 安装完成"
-else
-    success "Homebrew 已存在"
+  }
+  success "Xcode CLT 就绪"
+
+  run_cmd "安装/更新 Homebrew" bash -c '
+    if ! command -v brew &>/dev/null; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -f /usr/local/bin/brew ]]; then
+      eval "$(/usr/local/bin/brew shellenv)"
+    fi
+    brew update
+  '
+  success "Homebrew 就绪"
+}
+
+setup_cli() {
+  info "=== 2. CLI 工具 (含 AI / 网络 / VPS 相关) ==="
+  BREW_CLI=(
+    # 基础 + 网络测试
+    git gh curl wget iperf3 mtr speedtest-cli nmap iftop vnstat mosh rsync
+    # 开发 & 生产力
+    fzf ripgrep jq bat eza zoxide starship neovim tmux lazygit htop tree mas
+    # 语言 & VPS 相关
+    node python go awscli terraform ansible kubectl helm tailscale
+    # AI 相关
+    ollama   # 也可通过 cask
+  )
+  run_cmd "安装 CLI 工具" brew install "${BREW_CLI[@]}"
+  success "CLI 工具完成"
+}
+
+setup_gui() {
+  info "=== 3. GUI 应用 ==="
+  BREW_CASK=(
+    iterm2 visual-studio-code
+    raycast rectangle alt-tab stats
+    karabiner-elements hammerspoon
+    docker ollama tailscale
+    firefox obsidian notion postman cleanshot
+    # 可选娱乐/其他
+    # discord spotify
+  )
+  run_cmd "安装 GUI 应用" brew install --cask "${BREW_CASK[@]}"
+  success "GUI 应用完成"
+}
+
+setup_grok() {
+  info "=== 4. Grok CLI ==="
+  # 官方 (需订阅)
+  # run_cmd "安装官方 Grok Build CLI" curl -fsSL https://x.ai/cli/install.sh | bash
+  # 开源社区版
+  if ! command -v grok &>/dev/null; then
+    run_cmd "安装开源 Grok CLI" curl -fsSL https://raw.githubusercontent.com/superagent-ai/grok-cli/main/install.sh | bash
+  fi
+  warn "Grok CLI 完成。设置 API Key 后使用: export XAI_API_KEY=... (来自 console.x.ai)"
+  success "Grok CLI 部分完成"
+}
+
+setup_omz() {
+  info "=== 5. Oh My Zsh + 插件 ==="
+  if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    run_cmd "安装 Oh My Zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+  fi
+  ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+  run_cmd "安装 OMZ 插件" bash -c '
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM}/plugins/zsh-autosuggestions 2>/dev/null || true
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting 2>/dev/null || true
+    git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM}/plugins/zsh-completions 2>/dev/null || true
+  '
+  success "Oh My Zsh + 插件完成"
+}
+
+setup_chezmoi() {
+  info "=== 6. chezmoi (现代 dotfiles 管理) ==="
+  run_cmd "安装 chezmoi" brew install chezmoi
+  mkdir -p "$HOME/.dotfiles"
+  # 配置 chezmoi 使用 ~/.dotfiles 作为 source
+  mkdir -p "$HOME/.config/chezmoi"
+  cat > "$HOME/.config/chezmoi/chezmoi.yaml" << 'CHEZ'
+sourceDir: ~/.dotfiles
+CHEZ
+  success "chezmoi 已集成 (source: ~/.dotfiles)"
+}
+
+setup_optimizations() {
+  info "=== 7. 系统优化 ==="
+  # 键盘
+  run_cmd "键盘加速" defaults write -g KeyRepeat -int 1
+  run_cmd "键盘延迟" defaults write -g InitialKeyRepeat -int 10
+  # Finder
+  run_cmd "Finder 显示隐藏文件" defaults write com.apple.finder AppleShowAllFiles -bool true
+  run_cmd "Finder 路径栏" defaults write com.apple.finder ShowPathbar -bool true
+  run_cmd "禁用 DS_Store 网络" defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+  # Dock
+  run_cmd "Dock 自动隐藏加速" defaults write com.apple.dock autohide -bool true
+  run_cmd "Dock 动画加速" defaults write com.apple.dock autohide-time-modifier -float 0.15
+  # 截图
+  mkdir -p "$HOME/Pictures/Screenshots"
+  run_cmd "截图位置" defaults write com.apple.screencapture location "$HOME/Pictures/Screenshots"
+  # 其他
+  run_cmd "禁用自动纠正" defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+  killall Finder Dock &>/dev/null || true
+  success "系统优化完成"
+}
+
+setup_aliases() {
+  info "=== 8. 别名与函数 (网络/AI/VPS) ==="
+  # 这里会和 dotfiles 部分结合
+  success "别名将在 dotfiles 部分设置"
+}
+
+init_dotfiles_git() {
+  info "=== 9. 初始化 ~/.dotfiles git repo + push 提示 ==="
+  DOTFILES_DIR="$HOME/.dotfiles"
+  mkdir -p "$DOTFILES_DIR"
+  cd "$DOTFILES_DIR"
+  if [ ! -d .git ]; then
+    run_cmd "git init ~/.dotfiles" git init
+    run_cmd "git add & commit" git add . && git commit -m "Initial macOS setup by mac_setup.sh" || true
+  fi
+  if $DRY_RUN; then
+    echo "[DRY] Would prompt for remote and push"
+  else
+    echo "当前 ~/.dotfiles git 状态:"
+    git status --short || true
+    read -p "输入远程仓库 URL (如 git@github.com:你的用户名/dotfiles.git，空则跳过 push): " remote_url
+    if [ -n "$remote_url" ]; then
+      git remote remove origin 2>/dev/null || true
+      git remote add origin "$remote_url"
+      git branch -M main
+      run_cmd "推送 dotfiles" git push -u origin main
+    else
+      warn "跳过 push。你可以稍后手动: cd ~/.dotfiles && git remote add origin <url> && git push -u origin main"
+    fi
+  fi
+  success "Git repo 处理完成"
+}
+
+setup_full_dotfiles() {
+  info "=== 10. 完整 dotfiles + chezmoi + OMZ + 别名 ==="
+  DOTFILES_DIR="$HOME/.dotfiles"
+  mkdir -p "$DOTFILES_DIR"
+
+  # 生成 .zshrc (OMZ + chezmoi 友好 + 丰富别名/函数)
+  cat > "$DOTFILES_DIR/.zshrc" << 'ZSHRC'
+# ==========================================
+#  .zshrc - 由 mac_setup.sh + chezmoi 管理
+#  自定义请编辑此文件或使用 chezmoi edit
+# ==========================================
+
+# Oh My Zsh
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_THEME="robbyrussell"  # 或 "starship" 如果用 starship
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf docker zoxide)
+source $ZSH/oh-my-zsh.sh
+
+# Starship (如果安装)
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
 fi
 
-# 更新 Homebrew
-info "更新 Homebrew..."
-brew update
-
-# 3. 安装常用 CLI 工具（开发者 + 网络测试相关）
-info "安装常用 CLI 工具..."
-brew install \
-    git \
-    gh \                    # GitHub CLI
-    iperf3 \                # 网络速度测试（你之前问的）
-    curl \
-    wget \
-    fzf \
-    ripgrep \               # rg，超快搜索
-    jq \
-    htop \
-    neovim \
-    mas \                   # Mac App Store CLI
-    tree \
-    bat \                   # 更好的 cat
-    eza                     # 更好的 ls
-
-success "CLI 工具安装完成"
-
-# 4. 安装常用 GUI 应用（通过 Cask）
-info "安装常用 GUI 应用..."
-brew install --cask \
-    iterm2 \                # 更好的终端
-    visual-studio-code \
-    raycast \               # 现代启动器（强烈推荐）
-    rectangle \             # 窗口管理（免费替代 Magnet）
-    alt-tab \               # 更好的 Alt+Tab
-    stats \                 # 菜单栏系统监控
-    firefox \
-    obsidian \              # 笔记
-    discord \               # 可选，注释掉不需要的
-    spotify
-
-success "GUI 应用安装完成"
-
-# 5. 可选：安装 App Store 应用（需要先登录 App Store）
-info "检查是否安装 App Store 应用（mas）..."
-if mas account &>/dev/null; then
-    info "检测到已登录 App Store，安装常用 App..."
-    mas install 937984704 || true    # Amphetamine（保持唤醒）
-    mas install 409183722 || true    # Numbers（可选）
-    # mas install 497799835 || true  # Xcode（很大，建议手动安装）
-    success "App Store 应用安装完成"
-else
-    warn "未登录 App Store，跳过 mas 安装。"
-    warn "如需安装 App Store App，请先打开 App Store 登录，然后手动运行："
-    warn "  mas install 937984704   # Amphetamine"
+# zoxide
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh)"
 fi
 
-# 6. 基础系统优化（defaults write）
-info "应用 macOS 系统优化..."
-# 键盘重复速度（更快）
-defaults write -g KeyRepeat -int 1
-defaults write -g InitialKeyRepeat -int 10
+# 基础
+alias ll='eza -l --icons --git'
+alias ls='eza'
+alias cat='bat --style=plain'
+alias ..='cd ..'
 
-# Finder 显示隐藏文件和路径
-defaults write com.apple.finder AppleShowAllFiles -bool true
-defaults write com.apple.finder ShowPathbar -bool true
-defaults write com.apple.finder ShowStatusBar -bool true
+# ========== 网络测试 (VPS 相关) ==========
+export VPS_IP="YOUR_VPS_IP"   # <--- 修改这里！
 
-# 禁用 Finder 动画（更快）
-defaults write com.apple.finder DisableAllAnimations -bool true
+alias speedtest='curl -o /dev/null -s -w "下载速度: %{speed_download} bytes/sec\n" https://speed.hetzner.de/100MB.bin'
+alias speedtest-big='curl -o /dev/null -s -w "下载速度: %{speed_download} bytes/sec\n" https://speed.hetzner.de/1GB.bin'
 
-# Dock 自动隐藏 + 更快动画
-defaults write com.apple.dock autohide -bool true
-defaults write com.apple.dock autohide-delay -float 0
-defaults write com.apple.dock autohide-time-modifier -float 0.2
+function iperf-down() { iperf3 -c "${VPS_IP}" -P 10 -t 30 -R -i 1; }
+function iperf-up()   { iperf3 -c "${VPS_IP}" -P 10 -t 30 -i 1; }
+function iperf-both() {
+  echo "=== 下载测试 (VPS -> Mac) ==="
+  iperf-down
+  echo -e "\n=== 上传测试 (Mac -> VPS) ==="
+  iperf-up
+}
 
-# 禁用 Launchpad 动画
-defaults write com.apple.dock springboard-show-duration -int 0
-defaults write com.apple.dock springboard-hide-duration -int 0
+alias mtr-vps='mtr "${VPS_IP}"'
+alias ping-vps='ping -c 10 "${VPS_IP}"'
+alias nettest='speedtest && echo "---" && iperf-both || echo "请设置 VPS_IP"'
 
-# 截图保存位置
-mkdir -p ~/Pictures/Screenshots
-defaults write com.apple.screencapture location ~/Pictures/Screenshots
+# ========== AI / Grok 相关 ==========
+alias grok='grok'  # 假设已装
+function ask-grok() { grok --prompt "$*"; }
 
-# 禁用自动纠正和拼写检查（开发者友好）
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+# ========== VPS / 常用函数 ==========
+function vps-ssh() { ssh "root@${VPS_IP}" "$@"; }  # 根据你的用户调整
+function vps-scp() { scp "$1" "root@${VPS_IP}:$2"; }
 
-# 触控板和鼠标速度（可选）
-# defaults write -g com.apple.trackpad.scaling -float 2.0
+# 其他
+alias update-all='brew update && brew upgrade && brew cleanup && mas upgrade'
+ZSHRC
 
-# 重启相关服务让部分设置生效
-killall Finder &>/dev/null || true
-killall Dock &>/dev/null || true
+  # 也生成 .gitconfig 示例
+  cat > "$DOTFILES_DIR/.gitconfig" << 'GIT'
+[user]
+    name = Marco Chan
+    email = your@email.com
+[core]
+    editor = nvim
+[init]
+    defaultBranch = main
+GIT
 
-success "系统优化完成"
+  # 使用 chezmoi 管理
+  run_cmd "chezmoi add dotfiles" chezmoi --source "$DOTFILES_DIR" add "$HOME/.zshrc" "$HOME/.gitconfig" || true
+  run_cmd "chezmoi apply" chezmoi apply
 
-# 7. 额外：设置默认 shell 为 zsh（macOS 默认就是）
-if [[ "$SHELL" != *"zsh"* ]]; then
-    chsh -s "$(which zsh)" || warn "切换 shell 失败，请手动执行 chsh -s /bin/zsh"
+  success "chezmoi + dotfiles + 别名设置完成"
+}
+
+# ==============================================
+# 菜单系统 (类似 linux_tools.sh)
+# ==============================================
+
+MENU_ITEMS=(
+    "基础环境 (Xcode + Homebrew)"
+    "CLI 工具 (AI/网络/VPS)"
+    "GUI 应用"
+    "Grok CLI 安装"
+    "Oh My Zsh + 插件"
+    "chezmoi 集成"
+    "系统优化"
+    "网络测试别名/函数"
+    "初始化 ~/.dotfiles git + push 提示"
+    "完整 dotfiles (chezmoi + OMZ + 别名)"
+)
+
+SELECTED=(0 0 0 0 0 0 0 0 0 0)
+
+print_menu() {
+    clear
+    echo -e "\n${CYAN}=====================================================${NC}"
+    echo -e "${CYAN}   macOS 高级设置脚本 — 选择要执行的功能${NC}"
+    echo -e "${CYAN}   支持 --dry-run 预览 / 菜单交互${NC}"
+    echo -e "${CYAN}=====================================================${NC}"
+    echo -e "  ${GREEN}输入序号切换，a=全选，n=全不选，d=切换 dry-run，q=退出，回车执行${NC}\n"
+    for i in "${!MENU_ITEMS[@]}"; do
+        local idx=$((i + 1))
+        if [[ "${SELECTED[$i]}" == "1" ]]; then
+            echo -e "  ${GREEN}[✔] ${idx}. ${MENU_ITEMS[$i]}${NC}"
+        else
+            echo -e "  ${RED}[ ] ${idx}. ${MENU_ITEMS[$i]}${NC}"
+        fi
+    done
+    echo ""
+    local dry_status="OFF"
+    $DRY_RUN && dry_status="ON"
+    echo -e "  ${GREEN}a${NC} 全选   ${GREEN}n${NC} 全不选   ${YELLOW}d${NC} 切换DryRun (当前:${dry_status})   ${RED}q${NC} 退出   ${CYAN}回车${NC} 开始"
+    echo -e "${CYAN}=====================================================${NC}"
+    echo -n "  请输入序号: "
+}
+
+execute_selected() {
+    local funcs=(
+        setup_base
+        setup_cli
+        setup_gui
+        setup_grok
+        setup_omz
+        setup_chezmoi
+        setup_optimizations
+        setup_aliases
+        init_dotfiles_git
+        setup_full_dotfiles
+    )
+    for i in "${!SELECTED[@]}"; do
+        if [[ "${SELECTED[$i]}" == "1" ]]; then
+            ${funcs[$i]}
+        fi
+    done
+}
+
+# 主逻辑
+if $RUN_ALL; then
+    setup_base
+    setup_cli
+    setup_gui
+    setup_grok
+    setup_omz
+    setup_chezmoi
+    setup_optimizations
+    setup_full_dotfiles
+    init_dotfiles_git
+    success "全量执行完成"
+    exit 0
 fi
 
-# 8. 清理
-info "清理 Homebrew..."
-brew cleanup
+# 交互菜单
+while true; do
+    print_menu
+    read -r input
+
+    case "$input" in
+        "")
+            any=0
+            for s in "${SELECTED[@]}"; do [[ "$s" == "1" ]] && any=1; done
+            if [[ $any -eq 0 ]]; then
+                echo -e "\n  ${YELLOW}[WARN]${NC}  至少选择一项"
+                sleep 1
+            else
+                break
+            fi
+            ;;
+        a|A) SELECTED=(1 1 1 1 1 1 1 1 1 1) ;;
+        n|N) SELECTED=(0 0 0 0 0 0 0 0 0 0) ;;
+        d|D)
+            if $DRY_RUN; then DRY_RUN=false; else DRY_RUN=true; fi
+            ;;
+        q|Q)
+            clear
+            echo -e "\n  ${RED}已退出。${NC}\n"
+            exit 0
+            ;;
+        [1-9]|10)
+            idx=$((input - 1))
+            if [[ $idx -ge 0 && $idx -lt ${#SELECTED[@]} ]]; then
+                [[ "${SELECTED[$idx]}" == "1" ]] && SELECTED[$idx]=0 || SELECTED[$idx]=1
+            fi
+            ;;
+        *)
+            echo -e "\n  ${YELLOW}[WARN]${NC}  无效输入 1-10 / a / n / d / q / 回车"
+            sleep 1
+            ;;
+    esac
+done
+
+clear
+echo -e "${CYAN}开始执行选中的步骤...${NC}"
+execute_selected
 
 echo ""
-echo "======================================"
-success "macOS 设置脚本执行完成！"
-echo "======================================"
+echo -e "${CYAN}======================================"
+success "脚本执行完成！"
+echo -e "======================================${NC}"
+echo "建议："
+echo "  - source ~/.zshrc"
+echo "  - 重启终端或 Mac"
+echo "  - 编辑 ~/.dotfiles/.zshrc 替换 YOUR_VPS_IP"
+echo "  - cd ~/.dotfiles && git status (检查 push)"
 echo ""
-echo "建议操作："
-echo "  1. 重启 Mac 让所有优化生效"
-echo "  2. 打开 iTerm2 / VS Code 开始使用"
-echo "  3. 如需管理已安装内容，推荐创建 Brewfile："
-echo "     brew bundle dump --global --force"
-echo ""
-echo "如需恢复默认设置，可参考 mathiasbynens/dotfiles 项目。"
-echo ""
-
-# 可选：询问是否立即重启（注释掉避免意外）
-# read -p "是否现在重启？ (y/N) " -n 1 -r
-# echo
-# if [[ $REPLY =~ ^[Yy]$ ]]; then
-#     sudo reboot
-# fi
