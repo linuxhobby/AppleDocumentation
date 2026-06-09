@@ -177,12 +177,18 @@ setup_optimizations() {
   run_cmd "禁用 DS_Store 网络" defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
   # Dock - 不自动隐藏（用户要求）
   run_cmd "Dock 不自动隐藏" defaults write com.apple.dock autohide -bool false
+  # Launchpad 网格布局 (Launchpad 图标行列数，参考 AppleDocumentation/setting.txt)
+  # 1. 调整每一列显示图标数量 (每列图标数，即垂直行数)
+  run_cmd "Launchpad 每列图标数" defaults write com.apple.dock springboard-rows -int 6
+  # 2. 调整每一行显示图标数量 (每行图标数，即水平列数)
+  run_cmd "Launchpad 每行图标数" defaults write com.apple.dock springboard-columns -int 9
+  # 3. 设置生效 (本节末尾统一 killall Dock)
   # 截图
   mkdir -p "$HOME/Pictures/Screenshots"
   run_cmd "截图位置" defaults write com.apple.screencapture location "$HOME/Pictures/Screenshots"
   # 其他
   run_cmd "禁用自动纠正" defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-  killall Finder Dock &>/dev/null || true
+  killall Finder Dock &>/dev/null || true   # 重启 Dock 以使 Launchpad 网格等设置生效
   success "系统优化完成"
 }
 
