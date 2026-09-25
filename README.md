@@ -18,9 +18,6 @@ killall Dock
 ### 每次升级后自动清理  
 echo 'export HOMEBREW_NO_INSTALL_CLEANUP=0' >> ~/.zshrc  
 
-### 每周自动更新  
-crontab -e  
-0 3 * * 0 brew cleanup -s  
 # My macOS Applications
 
 ## 🚀 Efficiency Tools
