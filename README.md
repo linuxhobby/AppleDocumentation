@@ -68,6 +68,22 @@ crontab -e
 
 ---
 
+## Obsidian
+> 强大的知识库与笔记工具。  
+> 基于本地 Markdown 文件，支持双链、插件与知识图谱。
+
+- 官网：https://obsidian.md/
+
+---
+
+## Obsidian Web Clipper
+> Obsidian 官方网页剪藏工具。  
+> 快速保存网页内容到 Obsidian 知识库。
+
+- Chrome 商店：https://chromewebstore.google.com/detail/obsidian-web-clipper/
+
+---
+
 ## FlowVision
 > AI 工作流工具。  
 > 用于自动化与 AI 能力整合。
@@ -126,6 +142,38 @@ crontab -e
 
 ---
 
+## CodeBuddy CN
+> 字节跳动推出的 AI 编程助手。  
+> 支持代码补全、代码解释与重构。
+
+- 官网：https://codebuddy.cn/
+
+---
+
+## Qoder CN
+> 火山引擎推出的 AI 编程助手。  
+> 支持多语言代码生成与智能补全。
+
+- 官网：https://qoder.cn/
+
+---
+
+## TraeWork CN
+> 字节跳动推出的 AI 编程工作台。  
+> 集成 AI 辅助编程与项目管理能力。
+
+- 官网：https://trae.cn/
+
+---
+
+## OpenCode
+> 开源 AI 编程助手。  
+> 支持本地模型与多种 AI 服务接入。
+
+- GitHub：https://github.com/OpenCode-IDE/OpenCode
+
+---
+
 # 🤖 AI Tools
 
 ## ChatGPT
@@ -156,6 +204,20 @@ crontab -e
 ## ChatGPT Atlas
 > 第三方 ChatGPT 工具。  
 > 提供不同形式的 AI 交互体验。
+
+---
+
+## WorkBuddy
+> 字节跳动推出的 AI 办公助手。  
+> 支持文档处理、智能问答与工作流自动化。
+
+- 官网：https://workbuddy.cn/
+
+---
+
+## Hermes
+> AI 智能助手工具。  
+> 集成多种 AI 能力，支持对话与创作场景。
 
 ---
 
@@ -317,6 +379,14 @@ crontab -e
 
 ---
 
+## 阿里云盘
+> 阿里巴巴推出的云盘服务。  
+> 上传下载速度快，容量充足。
+
+- 官网：https://www.aliyundrive.com/
+
+---
+
 # 💬 Communication
 
 ## Telegram
@@ -359,6 +429,15 @@ crontab -e
 
 ---
 
+## 腾讯会议
+> 腾讯推出的视频会议工具。  
+> 支持多人在线会议、屏幕共享与录制。
+
+- 官网：https://meeting.tencent.com/
+- App Store：https://apps.apple.com/app/tencent-meeting/id1461414363
+
+---
+
 ## mail.com
 > 邮件客户端。
 
@@ -396,6 +475,14 @@ crontab -e
 
 - 官网：https://www.microsoft.com/microsoft-365/powerpoint
 - App Store：https://apps.apple.com/app/microsoft-powerpoint/id462062816
+
+---
+
+## 千问办公
+> 阿里通义千问推出的 AI 办公套件。  
+> 集成文档、表格、演示等 AI 能力。
+
+- 官网：https://qianwen.aliyun.com/office
 
 ---
 
